@@ -25,11 +25,44 @@ namespace Sales.API.Controllers
             return Ok(country);
         }
 
-        //Método get
+        //Método Get
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
             return Ok(await _context.Countries.ToListAsync());
+        }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetAsync(int id)
+        {
+            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            if (country == null)
+            {
+                return NotFound();
+            }
+            return Ok(country);
+        }
+
+        //Método Put
+        [HttpPut]
+        public async Task<ActionResult> PutAsync(Country country)
+        {
+            _context.Update(country);
+            await _context.SaveChangesAsync();
+            return Ok(country);
+        }
+
+        //Método Delete
+        [HttpDelete("(id:int)")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            if (country == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(country);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
