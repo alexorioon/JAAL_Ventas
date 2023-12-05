@@ -1,10 +1,13 @@
 ﻿@using Blazor.WEB.Repositories;
+@using Blazor.WEB.Shared
 @using Sales.Shared.Entities;
 
 @page "/countries"
 @inject IRepository repository
 
 <h3>Países (CountriesIndex)</h3>
+
+<a class="btn btn-primary" href="/countries/create">Nuevo País</a>
 
 <GenericList MyList="Countries">
     <Loading>
