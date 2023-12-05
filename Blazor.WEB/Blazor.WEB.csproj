@@ -27,4 +27,8 @@
     <None Include="Shared\GenericList.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sales.Shared\Sales.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
