@@ -1,0 +1,39 @@
+﻿@using Blazor.WEB.Repositories;
+@using Blazor.WEB.Shared
+@using Sales.Shared.Entities;
+
+@page "/categorias/create"
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Categoria</h3>
+
+<CategoriaForm @ref="categoriaForm" Categoria="categoria" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code
+{
+    private Categoria categoria = new();
+
+    private CategoriaForm? categoriaForm;
+
+    private async Task Create()
+    {
+        var httpResponse = await repository.Post("/api/categorias", categoria);
+        if (httpResponse.Error)
+        {
+            var message = await httpResponse.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+        categoriaForm!.FormPostedSuccessfully = true;
+
+        navigationManager.NavigateTo("/categorias");
+    }
+    private void Return()
+    {
+        categoriaForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/categorias");
+    }
+}

@@ -9,15 +9,14 @@ namespace Sales.API.Data
         {
         }
         public DbSet <Country> Countries { get; set; }
-        //public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
 
-            /*base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Categoria>().HasIndex(e => e.Name).IsUnique();*/
+            modelBuilder.Entity<Categoria>().HasIndex(e => e.Name).IsUnique();
         }
     }
 }

@@ -1,48 +1,48 @@
-﻿@page "/countries/edit/{Id:int}"
+﻿@page "/categorias/edit/{Id:int}"
 @using Blazor.WEB.Repositories;
 @using Sales.Shared.Entities;
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
-<h3>Editar País</h3>
+<h3>Editar Categoría</h3>
 
-@if(country is null)
+@if (categoria is null)
 {
     <p> Cargando...</p>
 }
 else
 {
-    <CountryForm @ref="countryForm" Country="country" OnValidSubmit="EditAsync" ReturnAction="Return"/>
+    <CategoriaForm @ref="categoriaForm" Categoria="categoria" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }
 
 @code {
 
-    private Country? country;
-    private CountryForm? countryForm;
+    private Categoria? categoria;
+    private CategoriaForm? categoriaForm;
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var responseHttp = await repository.Get<Country>($"/api/countries/{Id}");
+        var responseHttp = await repository.Get<Categoria>($"/api/categorias/{Id}");
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
             {
-                navigationManager.NavigateTo("/countries");
+                navigationManager.NavigateTo("/categorias");
                 return;
             }
             var message = await responseHttp.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        country = responseHttp.Response;
+        categoria = responseHttp.Response;
     }
     private async Task EditAsync()
     {
-        var responseHttp = await repository.Put("api/countries/", country);
+        var responseHttp = await repository.Put("api/categorias/", categoria);
 
         if (responseHttp.Error)
         {
@@ -50,14 +50,14 @@ else
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        countryForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo("/countries");
+        categoriaForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/categorias");
     }
 
     private void Return()
     {
-        countryForm!.FormPostedSuccessfully = true;     
-        navigationManager.NavigateTo("/countries");
+        categoriaForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/categorias");
     }
 
 }
